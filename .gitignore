@@ -1,0 +1,39 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+x64/
+Debug/
+Release/
+*.sys
+*.cat
+*.cer
+*.pdb
+*.obj
+*.tlog
+*.log
+
+# Visual Studio / .NET
+.vs/
+*.user
+*.suo
+*.VC.db
+*.VC.opendb
+ipch/
+
+# Local IDE / agent (keep on disk; do not publish)
+.cursor/
+
+# Pack / staging / local sandboxes
+dist/
+_backup/
+_work/
+user-mode/**/payload.zip
+
+# Tool build outputs (sources stay under tools/)
+tools/**/*.exe
+tools/**/*.pdb
+
+# Test artifacts
+overlay.bin
+TestResults/
+sizeof_check.obj

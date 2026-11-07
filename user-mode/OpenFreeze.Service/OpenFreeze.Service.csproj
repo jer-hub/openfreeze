@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <RootNamespace>OpenFreeze.Service</RootNamespace>
+    <AssemblyName>OpenFreeze.Service</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Configuration.Install" />
+    <ProjectReference Include="..\OpenFreeze.Core\OpenFreeze.Core.csproj" />
+  </ItemGroup>
+</Project>

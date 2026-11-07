@@ -1,0 +1,86 @@
+;
+; OfFilter.inf ?????????????????? KMDF volume upper filter (Phase 2: passthrough by default, RAM CoW when EnableCow=1)
+;
+
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = Volume
+ClassGuid   = {71A27CDD-812A-11D0-BEC7-08002BE2092F}
+Provider    = %ManufacturerName%
+DriverVer   = 11/06/2026,0.8.7.6
+PnpLockdown = 1
+CatalogFile = OfFilter.cat
+
+[DestinationDirs]
+OfFilter.DriverFiles = 12
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+OfFilter.sys = 1,,
+
+;*****************************************
+; DefaultInstall (class upper filter)
+;*****************************************
+
+[DefaultInstall.NTamd64]
+CopyFiles = OfFilter.DriverFiles
+AddReg    = OfFilter.UpperFilters.AddReg
+
+[DefaultInstall.NTamd64.Services]
+AddService = OfFilter,,OfFilter.Service
+
+[DefaultInstall.NTamd64.Wdf]
+KmdfService = OfFilter, OfFilter_wdfsect
+
+[DefaultUninstall.NTamd64]
+DelFiles = OfFilter.DriverFiles
+DelReg   = OfFilter.UpperFilters.DelReg
+
+[DefaultUninstall.NTamd64.Services]
+DelService = OfFilter,0x200
+
+[OfFilter.DriverFiles]
+OfFilter.sys
+
+[OfFilter.Service]
+DisplayName    = %ServiceDesc%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 0               ; SERVICE_BOOT_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\OfFilter.sys
+LoadOrderGroup = PnP Filter
+AddReg         = OfFilter.Parameters.AddReg
+
+[OfFilter_wdfsect]
+KmdfLibraryVersion = 1.33
+
+;
+; Append OfFilter to Volume class UpperFilters (MULTI_SZ | APPEND).
+;
+[OfFilter.UpperFilters.AddReg]
+HKLM,System\CurrentControlSet\Control\Class\{71A27CDD-812A-11D0-BEC7-08002BE2092F},UpperFilters,0x00010008,OfFilter
+
+;
+; Remove OfFilter from UpperFilters (MULTI_SZ | DELSZ).
+;
+[OfFilter.UpperFilters.DelReg]
+HKLM,System\CurrentControlSet\Control\Class\{71A27CDD-812A-11D0-BEC7-08002BE2092F},UpperFilters,0x00018002,OfFilter
+
+;
+; Parameters key. VolumeUniqueId (REG_BINARY) is written by the installer.
+; EnableCow=1 turns on Phase-2 CoW for the matched volume (RAM overlay by default).
+;
+[OfFilter.Parameters.AddReg]
+HKR,Parameters,,0x00000010
+HKR,Parameters,EnableCow,0x00010001,0
+HKR,Parameters,OverlayBackend,0x00010001,0
+HKR,Parameters,SlotCount,0x00010001,65536
+
+[Strings]
+ManufacturerName = "OpenFreeze"
+DiskName         = "OpenFreeze Filter Installation Disk"
+ServiceDesc      = "OpenFreeze Volume Filter"
+
+

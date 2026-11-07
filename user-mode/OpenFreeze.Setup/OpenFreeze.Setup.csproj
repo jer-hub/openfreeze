@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <RootNamespace>OpenFreeze.Setup</RootNamespace>
+    <AssemblyName>OpenFreeze.Setup</AssemblyName>
+    <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.IO.Compression.FileSystem" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Packer overwrites payload.zip before build; placeholder keeps IDE build working. -->
+    <EmbeddedResource Include="payload.zip" Condition="Exists('payload.zip')" LogicalName="OpenFreeze.Setup.payload.zip" />
+  </ItemGroup>
+</Project>
